@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Setup base environment
-        uses: ./.github/actions/base-environment.yml
+        uses: ./.github/actions/base-environment
 
       - name: Run static analysis
         run: composer check:static
@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Setup base environment
-        uses: ./.github/actions/base-environment.yml
+        uses: ./.github/actions/base-environment
 
       - name: Run static analysis
         run: composer check:style
@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Setup base environment
-        uses: ./.github/actions/base-environment.yml
+        uses: ./.github/actions/base-environment
 
       - name: Run static analysis
         run: composer check:tests
