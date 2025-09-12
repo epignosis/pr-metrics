@@ -1,0 +1,130 @@
+name: 'GitHub PR Metrics'
+description: 'Gather PR metrics about a GitHub repository'
+author: 'Vassilis Poursalidis'
+inputs:
+  github-mappings-path:
+    description: 'The file path for normalizing developers and mapping to teams.'
+    required: false
+    default: '.github/pr-metrics-mappings.yml'
+  metrics-contributions:
+    description: 'Whether to collect contribution metrics.'
+    default: 'true'
+    required: false
+  github-token:
+    description: 'GITHUB_TOKEN for accessing the repo.'
+    default: ${{ github.token }}
+    required: false
+  github-repository:
+    description: 'The full name of the repository in which to gather metrics.'
+    default: ${{ github.repository }}
+    required: false
+  httpclient:
+    description: 'The HTTP client to use (Guzzle).'
+    default: 'Guzzle'
+    required: false
+  guzzle-timeout:
+    description: 'The timeout for HTTP requests in seconds.'
+    default: '5'
+    required: false
+  guzzle-retry-enabled:
+    description: 'Whether to enable retry for HTTP requests.'
+    default: 'true'
+    required: false
+  guzzle-retry-max-attempts:
+    description: 'The maximum number of retry attempts for HTTP requests.'
+    default: '5'
+    required: false
+  guzzle-retry-on-timeout:
+    description: 'Whether to retry on timeout errors.'
+    default: 'true'
+    required: false
+  guzzle-retry-on-status:
+    description: 'A comma-separated list of HTTP status codes to retry on.'
+    default: '500,502,503,504'
+    required: false
+  guzzle-cache-enabled:
+    description: 'Whether to enable caching for HTTP requests.'
+    default: 'true'
+    required: false
+  guzzle-cache-ttl:
+    description: 'The time-to-live for the cache in seconds.'
+    default: '14400'
+    required: false
+  guzzle-cache-path:
+    description: 'The path to store the cache files.'
+    default: 'tmp/cache'
+    required: false
+  sprint-start-date:
+    description: 'The start date of the sprint in YYYY-MM-DD format.'
+    default: '2025-01-06'
+    required: false
+  github-ignore-labels:
+    description: 'A comma-separated list of labels to ignore.'
+    default: 'release'
+    required: false
+  github-ignore-users:
+    description: 'A comma-separated list of user IDs to ignore (e.g., bots).'
+    default: '41898282,49699333,163396788,39604003'
+    required: false
+  github-ignore-commit-messages:
+    description: 'A comma-separated list of commit message patterns to ignore.'
+    default: 'Merge branch,Merge remote-tracking branch,Merge pull request,Merging,Auto PR: Sync'
+    required: false
+  php-version:
+    description: "PHP version to install"
+    required: false
+    default: "8.3"
+outputs:
+  captured-metrics:
+    description: 'The file with the gathered metrics.'
+    value: ${{ steps.pr-metrics.outputs.github-metrics-file }}
+runs:
+  using: "composite"
+  steps:
+    - name: Install PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ inputs.php-version }}
+
+    - name: Get composer cache directory
+      id: composer-cache
+      shell: bash
+      run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+    - name: Cache dependencies
+      uses: actions/cache@v4
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-php-${{ inputs.php-version }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: ${{ runner.os }}-php-${{ inputs.php-version }}-composer-
+
+    - name: Install dependencies
+      shell: bash
+      run: composer install --no-dev --no-progress --no-interaction --prefer-dist --optimize-autoloader
+
+    - name: Run script
+      id: pr-metrics
+      shell: bash
+      env:
+        httpclient: ${{ inputs.httpclient }}
+        guzzle.timeout: ${{ inputs.guzzle-timeout }}
+        guzzle.retry.enabled: ${{ inputs.guzzle-retry-enabled }}
+        guzzle.retry.max_retry_attempts: ${{ inputs.guzzle-retry-max-attempts }}
+        guzzle.retry.retry_on_timeout: ${{ inputs.guzzle-retry-on-timeout }}
+        guzzle.retry.retry_on_status: ${{ inputs.guzzle-retry-on-status }}
+        guzzle.cache.enabled: ${{ inputs.guzzle-cache-enabled }}
+        guzzle.cache.ttl: ${{ inputs.guzzle-cache-ttl }}
+        guzzle.cache.path: ${{ inputs.guzzle-cache-path }}
+        sprint.start_date: ${{ inputs.sprint-start-date }}
+        github.token: ${{ inputs.github-token }}
+        github.repository: ${{ inputs.github-repository }}
+        github.mapping_file: ${{ inputs.github-mappings-path }}
+        github.ignore_labels: ${{ inputs.github-ignore-labels }}
+        github.ignore_users: ${{ inputs.github-ignore-users }}
+        github.ignore_commit_messages: ${{ inputs.github-ignore-commit-messages }}
+        metrics.contributions: ${{ inputs.metrics-contributions }}
+      run: |
+        php src/run.php
+branding:
+  icon: 'trending-up'
+  color: 'orange'

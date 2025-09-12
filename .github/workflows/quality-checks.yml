@@ -1,0 +1,34 @@
+name: Quality Checks
+
+on: [push]
+
+jobs:
+  static-analysis:
+    name: Run static analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup base environment
+        uses: ./.github/actions/base-environment.yml
+
+      - name: Run static analysis
+        run: composer check:static
+
+  code-style:
+    name: Run static analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup base environment
+        uses: ./.github/actions/base-environment.yml
+
+      - name: Run static analysis
+        run: composer check:style
+
+  tests:
+    name: Run static analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup base environment
+        uses: ./.github/actions/base-environment.yml
+
+      - name: Run static analysis
+        run: composer check:tests
