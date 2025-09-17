@@ -7,9 +7,6 @@ runs:
   using: composite
 
   steps:
-    - name: Check out repository code
-      uses: actions/checkout@v4
-
     - name: Install PHP
       uses: shivammathur/setup-php@v2
       with:
