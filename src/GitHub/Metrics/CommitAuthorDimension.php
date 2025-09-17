@@ -14,10 +14,11 @@ class CommitAuthorDimension extends AbstractGitHubDimension
         assert(is_string($params['committer_name']));
         assert(is_string($params['committer_email']));
 
-        $developer = $this->mappings->findDeveloper($params['committer_name'].'#'.$params['committer_email']);
+        $developerAlias = $params['committer_name'].'#'.$params['committer_email'];
+        $developer = $this->mappings->findDeveloper($developerAlias);
 
         if (!$developer) {
-            throw new RuntimeException('In commit '.$params['sha'].' found an unknown developer: '.$developer);
+            throw new RuntimeException('In commit '.$params['sha'].' found an unknown developer: '.$developerAlias);
         }
 
         return $developer;
