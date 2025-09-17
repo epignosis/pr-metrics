@@ -14,7 +14,7 @@ jobs:
         run: composer check:static
 
   code-style:
-    name: Run static analysis
+    name: Run style check
     runs-on: ubuntu-latest
     steps:
       - name: Setup base environment
@@ -24,7 +24,7 @@ jobs:
         run: composer check:style
 
   tests:
-    name: Run static analysis
+    name: Run unit tests
     runs-on: ubuntu-latest
     steps:
       - name: Setup base environment
