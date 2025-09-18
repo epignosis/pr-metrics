@@ -2,7 +2,7 @@
   "name": "epignosis/pr-metrics",
   "description": "Create PR metrics for Github repositories",
   "type": "library",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "keywords": [
     "metrics",
     "PR"
