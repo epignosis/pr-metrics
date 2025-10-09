@@ -85,7 +85,7 @@ jobs:
           # Optional overrides — defaults are shown in the Inputs section
           sprint-start-date: "2025-01-06"
           github-ignore-labels: "release"
-          github-ignore-users: "41898282,49699333,163396788,39604003"
+          github-ignore-users: "41898282,49699333"
           github-ignore-commit-messages: "Merge branch,Merge remote-tracking branch,Merge pull request,Merging,Auto PR: Sync"
 
       # Example: Upload metrics to S3 for further processing
@@ -112,26 +112,26 @@ The most common inputs to override are:
 
 ### Inputs
 
-| Name | Description | Default |
-|---|---|---|
-| `github-mappings-path`          | The file path for normalizing developers and mapping to teams. | `.github/pr-metrics-mappings.yml`                                                    |
-| `metrics-contributions`         | Whether to collect contribution metrics.                       | true                                                                                 |
-| `github-token`                  | GitHub access token (or PAT) for accessing the repo.           | `${{ github.token }}`                                                                |
-| `github-repository`             | The full name of the repository in which to gather metrics.    | `${{ github.repository }}`                                                           |
-| `httpclient`                    | The HTTP client to use (Guzzle).                               | Guzzle                                                                               |
-| `guzzle-timeout`                | The timeout for HTTP requests in seconds.                      | 5                                                                                    |
-| `guzzle-retry-enabled`          | Whether to enable retry for HTTP requests.                     | true                                                                                 |
-| `guzzle-retry-max-attempts`     | The maximum number of retry attempts for HTTP requests.        | 5                                                                                    |
-| `guzzle-retry-on-timeout`       | Whether to retry on timeout errors.                            | true                                                                                 |
-| `guzzle-retry-on-status`        | A comma-separated list of HTTP status codes to retry on.       | 500,502,503,504                                                                      |
-| `guzzle-cache-enabled`          | Whether to enable caching for HTTP requests.                   | true                                                                                 |
-| `guzzle-cache-ttl`              | The time-to-live for the cache in seconds.                     | 14400                                                                                |
-| `guzzle-cache-path`             | The path to store the cache files.                             | `tmp/cache`                                                                          |
-| `sprint-start-date`             | The start date of the sprint in `YYYY-MM-DD` format.           | 2025-01-06                                                                           |
-| `github-ignore-labels`          | A comma-separated list of labels to ignore.                    | release                                                                              |
-| `github-ignore-users`           | A comma-separated list of user IDs to ignore (e.g., bots).     | 41898282,49699333,163396788,39604003                                                 |
-| `github-ignore-commit-messages` | A comma-separated list of commit message patterns to ignore.   | Merge branch,Merge remote-tracking branch,Merge pull request,Merging,Auto PR: Sync   |
-| `php-version`                   | PHP version to install                                         | 8.3                                                                                  |
+| Name | Description | Default                                                                            |
+|---|---|------------------------------------------------------------------------------------|
+| `github-mappings-path`          | The file path for normalizing developers and mapping to teams. | `.github/pr-metrics-mappings.yml`                                                  |
+| `metrics-contributions`         | Whether to collect contribution metrics.                       | true                                                                               |
+| `github-token`                  | GitHub access token (or PAT) for accessing the repo.           | `${{ github.token }}`                                                              |
+| `github-repository`             | The full name of the repository in which to gather metrics.    | `${{ github.repository }}`                                                         |
+| `httpclient`                    | The HTTP client to use (Guzzle).                               | Guzzle                                                                             |
+| `guzzle-timeout`                | The timeout for HTTP requests in seconds.                      | 5                                                                                  |
+| `guzzle-retry-enabled`          | Whether to enable retry for HTTP requests.                     | true                                                                               |
+| `guzzle-retry-max-attempts`     | The maximum number of retry attempts for HTTP requests.        | 5                                                                                  |
+| `guzzle-retry-on-timeout`       | Whether to retry on timeout errors.                            | true                                                                               |
+| `guzzle-retry-on-status`        | A comma-separated list of HTTP status codes to retry on.       | 500,502,503,504                                                                    |
+| `guzzle-cache-enabled`          | Whether to enable caching for HTTP requests.                   | true                                                                               |
+| `guzzle-cache-ttl`              | The time-to-live for the cache in seconds.                     | 14400                                                                              |
+| `guzzle-cache-path`             | The path to store the cache files.                             | `tmp/cache`                                                                        |
+| `sprint-start-date`             | The start date of the sprint in `YYYY-MM-DD` format.           | 2025-01-06                                                                         |
+| `github-ignore-labels`          | A comma-separated list of labels to ignore.                    | release                                                                            |
+| `github-ignore-users`           | A comma-separated list of user IDs to ignore (e.g., bots).     | 41898282,49699333,198982749                                                        |
+| `github-ignore-commit-messages` | A comma-separated list of commit message patterns to ignore.   | Merge branch,Merge remote-tracking branch,Merge pull request,Merging,Auto PR: Sync |
+| `php-version`                   | PHP version to install                                         | 8.3                                                                                |
 
 ### Outputs
 

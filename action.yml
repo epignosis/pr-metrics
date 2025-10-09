@@ -64,7 +64,7 @@ inputs:
     required: false
   github-ignore-users:
     description: 'A comma-separated list of user IDs to ignore (e.g., bots).'
-    default: '41898282,49699333,163396788,39604003'
+    default: '41898282,49699333,198982749'
     required: false
   github-ignore-commit-messages:
     description: 'A comma-separated list of commit message patterns to ignore.'
